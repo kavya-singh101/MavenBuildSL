@@ -10,7 +10,7 @@ pipeline {
 	
 	stage('Build'){
 		steps{
-			bash "mvn clean install -Dmaven.test.skip=true"
+			sh "mvn clean install -Dmaven.test.skip=true"
 		}
 	}
 	
@@ -31,14 +31,5 @@ pipeline {
 		
 	}
 	
-	stage('Notification'){
-		steps{
-		emailext(
-			subject: "Job Completed",
-			body: "Jenkins pipeline job for maven build job completed",
-			to: "sudheer.baraker@gmail.com"
-		)
-		}
-	}
 	}
 }
