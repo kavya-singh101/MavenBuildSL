@@ -1,31 +1,29 @@
 pipeline {
     agent any
-    tools{
-        maven 'maven 3.8.6'
+    tools {
+        maven 'maven 3.8.6'  // Ensure that Maven 3.8.6 is installed and configured in Jenkins
     }
-    stages{
-        stage('Checkout Code'){
-            steps{
+    stages {
+        stage('Checkout Code') {
+            steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SudheerBarakers/Devops_Sample_Maven']]])
-                bat 'mvn clean install'
             }
         }
-    stage('build Automation') {
-
-	parallel {
-		stage('Maven Build'){
-           		 steps{
-                bat 'mvn clean install'
+        
+        stage('Build Automation') {
+            parallel {
+                stage('Maven Build') {
+                    steps {
+                        sh 'mvn clean install'  // Use sh for Linux/Ubuntu agents
+                    }
+                }
+                
+                stage('Maven Test Cases') {
+                    steps {
+                        sh 'mvn clean test'  // Use sh for Linux/Ubuntu agents
+                    }
+                }
             }
         }
-	stage('Maven Test Cases'){
-           		 steps{
-                bat 'mvn clean test'
-            }
-        }
-
-		}
-    }
-     
     }
 }
